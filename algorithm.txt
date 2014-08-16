@@ -1,0 +1,58 @@
+o_seeds:=[...]	// Is assumed to be clean
+f_seeds:=[...]	// Is assumed to be clean
+o_list:=[...]	// Need to prune
+f_list:=[...]	// Need to prune
+
+take f in f_list:
+	if f is related to o_seeds or f_seeds
+		increase count of f/add to new list f_freq
+
+take o in o_list:
+	if o is related to o_seeds or f_seeds
+		increase count of o/add to new list o_freq
+
+use counts to calculated confidence in o of o_list and f of f_list
+
+use threshold to take high confidence o and f and add them to o_seeds and f_seeds
+
+repeat till no o or f with confidence above threshold
+--
+
+0: R11: amod(screen-6,"good"-5)
+`	rel=amod with p2 in o_seeds and p1 != prod
+	f := p1
+1: R12: amod(player-6,"best"-4)nsubj(player-6,iPod-1)
+`	1_rel=amod with 1_p2 in o_seeds and 1_p1 = prod
+`	2_rel=nsubj with 2_p1 = prod
+	f := 2_p2
+4: R31: conj_and("audio"-7,video-9)
+`	rel=conj_and with p1 in f_seeds
+	f := p2
+5: R31': conj_and(audio-7,"video"-9)
+`	rel=conj_and with p2 in f_seeds
+	f := p1
+6: R32: nsubj(has-3,"G3"-2)dobj(has-3,lens-6)
+`	1_rel=nsubj with 1_p1 = "has" and 1_p2 in f_seeds
+	2_rel=dobj with 2_p1 = "has"
+	f := 2_p2
+---
+2: R21: amod("screen"-6,good-5)
+`	rel=amod with p1 in f_seeds
+	o := p2
+3: R22: nsubj(player-6,"iPod"-1)amod(player-6,best-4)
+`	1_rel=nsubj with 1_p1 = prod and 1_p2 in f_seeds
+`	2_rel=amod with 2_p1 = prod
+	o := 2_p2
+7: R41: conj_and(amazing-7,"easy"-9)
+`	rel=conj_and with p2 in o_seeds
+	o := p1
+8: R41': conj_and("amazing"-7,easy-9)
+`	rel=conj_and with p1 in o_seeds
+	o := p2
+9: R42: amod(player-13,"cool"-7)amod(player-13,sexy-9)
+`	rel=amod with p1 = prod
+	o := p2
+
+--
+TODO:
+Get rid of proper nouns from feature-set
